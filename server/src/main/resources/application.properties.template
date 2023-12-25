@@ -1,0 +1,13 @@
+#Server
+server.port=8080
+#Datasource
+spring.datasource.url=jdbc:postgresql://localhost:5432/chat
+spring.datasource.username=
+spring.datasource.password=
+spring.datasource.driver-class-name=org.postgresql.Driver
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
+#Security (change the secret key)
+application.security.jwt-secret-key=QlJPUVVFSEFDRVNKQUtJQU5ET01FTUlTSVNURU1BIT8=!
+application.security.jwt-expiration=86400000
+application.security.jwt-refresh-expiration=2592000000
