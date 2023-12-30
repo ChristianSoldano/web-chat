@@ -1,8 +1,8 @@
-package ar.com.christiansoldano.chat.service;
+package ar.com.christiansoldano.chat.service.user;
 
 import ar.com.christiansoldano.chat.exception.user.RoleNotFoundException;
-import ar.com.christiansoldano.chat.model.Role;
-import ar.com.christiansoldano.chat.repository.RoleRepository;
+import ar.com.christiansoldano.chat.model.user.Role;
+import ar.com.christiansoldano.chat.repository.user.RoleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
