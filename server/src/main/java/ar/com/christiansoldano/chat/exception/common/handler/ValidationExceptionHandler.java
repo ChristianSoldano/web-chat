@@ -2,7 +2,6 @@ package ar.com.christiansoldano.chat.exception.common.handler;
 
 import ar.com.christiansoldano.chat.dto.ErrorDTO;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;

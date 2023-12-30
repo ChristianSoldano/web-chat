@@ -1,8 +1,8 @@
 package ar.com.christiansoldano.chat.mapper;
 
 import ar.com.christiansoldano.chat.dto.chat.CreateChatMessageDTO;
-import ar.com.christiansoldano.chat.dto.chat.SendMessageDTO;
 import ar.com.christiansoldano.chat.dto.chat.MessageSentDTO;
+import ar.com.christiansoldano.chat.dto.chat.SendMessageDTO;
 import ar.com.christiansoldano.chat.model.chat.Chat;
 import ar.com.christiansoldano.chat.model.chat.Message;
 import ar.com.christiansoldano.chat.model.user.User;

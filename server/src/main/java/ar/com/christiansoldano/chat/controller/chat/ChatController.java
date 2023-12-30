@@ -2,8 +2,8 @@ package ar.com.christiansoldano.chat.controller.chat;
 
 import ar.com.christiansoldano.chat.dto.chat.ChatCreatedDTO;
 import ar.com.christiansoldano.chat.dto.chat.CreateChatDTO;
-import ar.com.christiansoldano.chat.dto.chat.SendMessageDTO;
 import ar.com.christiansoldano.chat.dto.chat.MessageSentDTO;
+import ar.com.christiansoldano.chat.dto.chat.SendMessageDTO;
 import ar.com.christiansoldano.chat.dto.paging.PaginatedEntityDTO;
 import ar.com.christiansoldano.chat.model.user.User;
 import ar.com.christiansoldano.chat.service.chat.ChatService;

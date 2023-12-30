@@ -2,8 +2,8 @@ package ar.com.christiansoldano.chat.service.chat;
 
 import ar.com.christiansoldano.chat.dto.chat.ChatCreatedDTO;
 import ar.com.christiansoldano.chat.dto.chat.CreateChatDTO;
-import ar.com.christiansoldano.chat.dto.chat.SendMessageDTO;
 import ar.com.christiansoldano.chat.dto.chat.MessageSentDTO;
+import ar.com.christiansoldano.chat.dto.chat.SendMessageDTO;
 import ar.com.christiansoldano.chat.exception.chat.ChatAlreadyExistsException;
 import ar.com.christiansoldano.chat.exception.chat.ChatNotBelongingException;
 import ar.com.christiansoldano.chat.exception.chat.ChatNotFoundException;
