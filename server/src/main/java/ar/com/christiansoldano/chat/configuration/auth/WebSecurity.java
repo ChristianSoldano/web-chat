@@ -40,11 +40,13 @@ public class WebSecurity {
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(GET, "/api/users", "/health").permitAll()
+                        .requestMatchers(GET, "/health").permitAll()
                         .requestMatchers(POST, "/api/auth/**").permitAll()
                         .requestMatchers("/error").permitAll()
-                        .requestMatchers("/api/test/**").hasAnyRole(ADMIN)
+                        .requestMatchers("/api/test/**").hasRole(ADMIN)
+                        .requestMatchers("/api/users/**").hasRole(ADMIN)
                         .requestMatchers("/messenger").permitAll()
+                        .requestMatchers("/api/chats/**").hasAnyRole(ADMIN, COMMON)
                         .anyRequest().authenticated())
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)

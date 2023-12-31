@@ -1,9 +1,6 @@
 package ar.com.christiansoldano.chat.service.chat;
 
-import ar.com.christiansoldano.chat.dto.chat.ChatCreatedDTO;
-import ar.com.christiansoldano.chat.dto.chat.CreateChatDTO;
-import ar.com.christiansoldano.chat.dto.chat.MessageSentDTO;
-import ar.com.christiansoldano.chat.dto.chat.SendMessageDTO;
+import ar.com.christiansoldano.chat.dto.chat.*;
 import ar.com.christiansoldano.chat.exception.chat.ChatAlreadyExistsException;
 import ar.com.christiansoldano.chat.exception.chat.ChatNotBelongingException;
 import ar.com.christiansoldano.chat.exception.chat.ChatNotFoundException;
@@ -16,10 +13,12 @@ import ar.com.christiansoldano.chat.service.user.UserService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 import static java.lang.String.format;
@@ -48,9 +47,9 @@ public class ChatService {
         return chatMapper.toChatCreatedDTO(chat, message);
     }
 
-    public MessageSentDTO sendMessage(SendMessageDTO sendMessageDTO, User user) {
-        Chat chat = chatRepository.findById(sendMessageDTO.chatId())
-                .orElseThrow(() -> new ChatNotFoundException(format("Chat id '%s' was not found", sendMessageDTO.chatId())));
+    public MessageSentDTO sendMessage(SendMessageDTO sendMessageDTO, UUID chatId, User user) {
+        Chat chat = chatRepository.findById(chatId)
+                .orElseThrow(() -> new ChatNotFoundException(format("Chat id '%s' was not found", chatId)));
         boolean userBelongsToChat = chat.getUser1().getId().equals(user.getId()) || chat.getUser2().getId().equals(user.getId());
         if (!userBelongsToChat) {
             throw new ChatNotBelongingException();
@@ -66,5 +65,12 @@ public class ChatService {
         }
 
         return messageService.getMessages(chatId, paging);
+    }
+
+    public Page<ChatDTO> getChats(User user, Pageable paging) {
+        Page<Chat> chatsByUser = chatRepository.findChatsByUser(user, paging);
+        List<ChatDTO> chats = chatMapper.toChatDTO(chatsByUser.getContent());
+
+        return new PageImpl<>(chats, paging, chatsByUser.getTotalElements());
     }
 }
