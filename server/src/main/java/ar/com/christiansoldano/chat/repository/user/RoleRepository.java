@@ -1,13 +1,14 @@
-package ar.com.christiansoldano.chat.repository;
+package ar.com.christiansoldano.chat.repository.user;
 
-import ar.com.christiansoldano.chat.model.Role;
+import ar.com.christiansoldano.chat.model.user.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
-public interface RoleRepository extends JpaRepository<Role, Long> {
+public interface RoleRepository extends JpaRepository<Role, UUID> {
 
     Optional<Role> findByName(String name);
 }

@@ -1,9 +1,9 @@
-package ar.com.christiansoldano.chat.service;
+package ar.com.christiansoldano.chat.service.user;
 
 import ar.com.christiansoldano.chat.dto.user.UserDTO;
 import ar.com.christiansoldano.chat.mapper.UserMapper;
-import ar.com.christiansoldano.chat.model.User;
-import ar.com.christiansoldano.chat.repository.UserRepository;
+import ar.com.christiansoldano.chat.model.user.User;
+import ar.com.christiansoldano.chat.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

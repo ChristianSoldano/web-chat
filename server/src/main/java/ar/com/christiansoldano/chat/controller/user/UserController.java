@@ -1,7 +1,7 @@
-package ar.com.christiansoldano.chat.controller;
+package ar.com.christiansoldano.chat.controller.user;
 
 import ar.com.christiansoldano.chat.dto.user.UserDTO;
-import ar.com.christiansoldano.chat.service.UserService;
+import ar.com.christiansoldano.chat.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

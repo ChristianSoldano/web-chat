@@ -1,4 +1,4 @@
-package ar.com.christiansoldano.chat.service;
+package ar.com.christiansoldano.chat.service.user;
 
 import ar.com.christiansoldano.chat.configuration.auth.JwtUtils;
 import ar.com.christiansoldano.chat.dto.auth.AuthenticationReponseDTO;
@@ -6,8 +6,8 @@ import ar.com.christiansoldano.chat.dto.auth.LoginDTO;
 import ar.com.christiansoldano.chat.dto.auth.RegisterDTO;
 import ar.com.christiansoldano.chat.exception.user.UserAlreadyExistsException;
 import ar.com.christiansoldano.chat.mapper.UserMapper;
-import ar.com.christiansoldano.chat.model.Role;
-import ar.com.christiansoldano.chat.model.User;
+import ar.com.christiansoldano.chat.model.user.Role;
+import ar.com.christiansoldano.chat.model.user.User;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;

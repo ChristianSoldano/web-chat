@@ -2,10 +2,11 @@ package ar.com.christiansoldano.chat.dto.user;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.UUID;
 
 public record UserDTO(
 
-        Integer id,
+        UUID id,
         String username,
         String password,
         String name,

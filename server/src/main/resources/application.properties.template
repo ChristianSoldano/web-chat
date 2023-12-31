@@ -11,3 +11,4 @@ spring.jpa.properties.hibernate.format_sql=true
 application.security.jwt-secret-key=QlJPUVVFSEFDRVNKQUtJQU5ET01FTUlTSVNURU1BIT8=!
 application.security.jwt-expiration=86400000
 application.security.jwt-refresh-expiration=2592000000
+application.security.allowed_origins=*

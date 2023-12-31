@@ -1,6 +1,6 @@
 package ar.com.christiansoldano.chat.configuration.auth;
 
-import ar.com.christiansoldano.chat.repository.UserRepository;
+import ar.com.christiansoldano.chat.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

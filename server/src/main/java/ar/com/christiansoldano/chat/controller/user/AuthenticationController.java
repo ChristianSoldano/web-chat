@@ -1,9 +1,9 @@
-package ar.com.christiansoldano.chat.controller;
+package ar.com.christiansoldano.chat.controller.user;
 
 import ar.com.christiansoldano.chat.dto.auth.AuthenticationReponseDTO;
 import ar.com.christiansoldano.chat.dto.auth.LoginDTO;
 import ar.com.christiansoldano.chat.dto.auth.RegisterDTO;
-import ar.com.christiansoldano.chat.service.AuthenticationService;
+import ar.com.christiansoldano.chat.service.user.AuthenticationService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

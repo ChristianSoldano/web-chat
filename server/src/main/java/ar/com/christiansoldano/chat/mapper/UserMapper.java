@@ -2,7 +2,7 @@ package ar.com.christiansoldano.chat.mapper;
 
 import ar.com.christiansoldano.chat.dto.auth.RegisterDTO;
 import ar.com.christiansoldano.chat.dto.user.UserDTO;
-import ar.com.christiansoldano.chat.model.User;
+import ar.com.christiansoldano.chat.model.user.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
