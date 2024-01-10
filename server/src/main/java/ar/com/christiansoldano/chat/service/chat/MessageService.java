@@ -46,4 +46,11 @@ public class MessageService {
 
         return new PageImpl<>(messages, paging, messagesPage.getTotalElements());
     }
+
+    public MessageSentDTO getLastMessageByChat(UUID chatId) {
+        Message message = messageRepository.findFirstByChat_IdOrderByCreatedAtDesc(chatId)
+                .orElse(null);
+
+        return messageMapper.toMessageSentDTO(message);
+    }
 }

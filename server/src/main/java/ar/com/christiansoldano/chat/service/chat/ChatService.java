@@ -69,7 +69,7 @@ public class ChatService {
 
     public Page<ChatDTO> getChats(User user, Pageable paging) {
         Page<Chat> chatsByUser = chatRepository.findChatsByUser(user, paging);
-        List<ChatDTO> chats = chatMapper.toChatDTO(chatsByUser.getContent());
+        List<ChatDTO> chats = chatMapper.toChatDTO(chatsByUser.getContent(), user);
 
         return new PageImpl<>(chats, paging, chatsByUser.getTotalElements());
     }
