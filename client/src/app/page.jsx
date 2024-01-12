@@ -1,11 +1,10 @@
 "use client";
-import { setCookie, getCookie, deleteCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
-import jwt from "jsonwebtoken";
-import { login } from "@/app/services/api";
 import { useState, useEffect } from "react";
+import { useUser } from "./context/UserProvider";
 
 export default function Home() {
+  const { user, login, isLoadingUser } = useUser();
   const router = useRouter();
   const [hideUsernameError, setHideUsernameError] = useState(true);
   const [hidePasswordError, setHidePasswordError] = useState(true);
@@ -13,7 +12,6 @@ export default function Home() {
   const [loginFailedMessage, setLoginFailedMessage] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
   const handleUsernameChange = (event) => {
     const value = event.target.value;
     setHideUsernameError(!!value);
@@ -29,13 +27,9 @@ export default function Home() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const loginResponse = await login({ username, password });
-      const jwtData = jwt.decode(loginResponse.access_token);
-      loginResponse.loggedUser = jwtData.sub;
-      setCookie("session", loginResponse);
+      await login({ username, password });
       router.push("/chat");
     } catch (error) {
-      setHideloginFailed(false);
       if (error.message === "403") {
         setLoginFailedMessage(
           "The username or password you’ve entered is incorrect"
@@ -43,19 +37,15 @@ export default function Home() {
       } else {
         setLoginFailedMessage("Something went wrong. Try again later");
       }
+
+      setHideloginFailed(false);
     }
   };
 
   useEffect(() => {
-    const sessionCookie = getCookie("session");
-    if (!sessionCookie) {
-      return;
+    if (user && !isLoadingUser) {
+      router.push("/chat");
     }
-
-    const session = JSON.parse(sessionCookie);
-    const accessToken = jwt.decode(session.access_token);
-    const isExpired = Math.floor(Date.now() / 1000) > accessToken.exp;
-    isExpired ? deleteCookie("session") : router.push("/chat");
   }, []);
 
   return (

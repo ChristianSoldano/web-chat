@@ -1,10 +1,8 @@
 import moment from "moment";
 
-const loggedUser = "user1";
-
-export default ({ message }) => {
+export default ({ message, user }) => {  
   const sentAt = moment(message.createdAt).format("HH:mm");
-  const messageStyle = message.sender === loggedUser ? "sent" : "received";
+  const messageStyle = message.sender === user.username ? "sent" : "received";
 
   return (
     <li className={`message ${messageStyle}`}>

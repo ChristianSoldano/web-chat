@@ -1,3 +1,7 @@
 export default () => {
-  return <span className="loader"></span>;
+  return (
+    <div className="spinner-loader">
+      <span className="spinner"></span>
+    </div>
+  );
 };
