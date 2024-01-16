@@ -48,6 +48,10 @@ public abstract class ChatMapper {
     @AfterMapping
     protected void afterMappingChatDTO(@MappingTarget ChatDTO dto, Chat chat) {
         MessageSentDTO lastMessage = messageService.getLastMessageByChat(chat.getId());
+        if (lastMessage == null) {
+            return;
+        }
+
         LastMessageDTO lastMessageDTO = new LastMessageDTO(lastMessage.type(), lastMessage.content(), lastMessage.sender());
         dto.setLastMessage(lastMessageDTO);
     }
