@@ -12,9 +12,6 @@ import ar.com.christiansoldano.chat.repository.chat.ChatRepository;
 import ar.com.christiansoldano.chat.service.user.UserService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -58,19 +55,18 @@ public class ChatService {
         return messageService.saveMessage(sendMessageDTO, user, chat);
     }
 
-    public Page<MessageSentDTO> getMessages(UUID chatId, User user, Pageable paging) {
+    public List<MessageSentDTO> getPreviousTenMessages(UUID chatId, UUID lastMessageId, User user) {
         boolean userBelongsToChat = chatRepository.userBelongsToChat(chatId, user);
         if (!userBelongsToChat) {
             throw new ChatNotBelongingException();
         }
 
-        return messageService.getMessages(chatId, paging);
+        return messageService.getPreviousTenMessages(chatId, lastMessageId);
     }
 
-    public Page<ChatDTO> getChats(User user, Pageable paging) {
-        Page<Chat> chatsByUser = chatRepository.findChatsByUser(user, paging);
-        List<ChatDTO> chats = chatMapper.toChatDTO(chatsByUser.getContent());
+    public List<ChatDTO> getChats(User user) {
+        List<Chat> chats = chatRepository.findChatsByUser(user);
 
-        return new PageImpl<>(chats, paging, chatsByUser.getTotalElements());
+        return chatMapper.toChatDTO(chats, user);
     }
 }

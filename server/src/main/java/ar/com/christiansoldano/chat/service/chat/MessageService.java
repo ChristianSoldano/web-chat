@@ -10,9 +10,6 @@ import ar.com.christiansoldano.chat.model.user.User;
 import ar.com.christiansoldano.chat.repository.chat.MessageRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -40,10 +37,21 @@ public class MessageService {
         return messageMapper.toMessageSentDTO(message);
     }
 
-    public Page<MessageSentDTO> getMessages(UUID chatId, Pageable paging) {
-        Page<Message> messagesPage = messageRepository.findByChat_IdOrderByCreatedAtDesc(chatId, paging);
-        List<MessageSentDTO> messages = messageMapper.toMessageSentDTO(messagesPage.getContent());
+    public List<MessageSentDTO> getPreviousTenMessages(UUID chatId, UUID messageId) {
+        List<Message> messages;
+        if (messageId == null) {
+            messages = messageRepository.findFirst20ByChat_IdOrderByCreatedAtDesc(chatId);
+        } else {
+            messages = messageRepository.findPreviousByChatIdAndMessageId(chatId, messageId);
+        }
 
-        return new PageImpl<>(messages, paging, messagesPage.getTotalElements());
+        return messageMapper.toMessageSentDTO(messages);
+    }
+
+    public MessageSentDTO getLastMessageByChat(UUID chatId) {
+        Message message = messageRepository.findFirstByChat_IdOrderByCreatedAtDesc(chatId)
+                .orElse(null);
+
+        return messageMapper.toMessageSentDTO(message);
     }
 }

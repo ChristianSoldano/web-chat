@@ -1,19 +1,24 @@
 package ar.com.christiansoldano.chat.dto.chat;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.sql.Timestamp;
 import java.util.UUID;
 
-public record ChatDTO(
+@Setter
+@Getter
+public class ChatDTO {
 
-        UUID id,
+    private UUID id;
 
-        String username1,
+    @JsonProperty("chat_with")
+    private String chatWith;
 
-        String username2,
+    @JsonProperty("last_message")
+    private LastMessageDTO lastMessage;
 
-        @JsonProperty("created_at")
-        Timestamp createdAt
-) {
+    @JsonProperty("created_at")
+    private Timestamp createdAt;
 }
