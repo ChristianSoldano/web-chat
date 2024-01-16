@@ -66,14 +66,16 @@ export default ({ selectedChat }) => {
   };
 
   const handleScroll = (e) => {
-    if (e.target.scrollTop <= 10 && lastMessageId) {
-      const lastElementChild = messagesRef.current?.lastElementChild;
-      const lastElementChildIndex = Array.from(
-        messagesRef.current.children
-      ).indexOf(lastElementChild);
-      fetchPreviousMessages();
-      scrollToIndex(lastElementChildIndex);
+    if (e.target.scrollTop > 10 || !lastMessageId || isLoading) {
+      return;
     }
+
+    const lastElementChild = messagesRef.current?.lastElementChild;
+    const lastElementChildIndex = Array.from(
+      messagesRef.current.children
+    ).indexOf(lastElementChild);
+    fetchPreviousMessages();
+    scrollToIndex(lastElementChildIndex);
   };
 
   return (
