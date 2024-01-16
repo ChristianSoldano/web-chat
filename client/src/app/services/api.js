@@ -5,7 +5,6 @@ async function request(url, method, body = null, jwtToken = null) {
   const headers = {
     "Content-Type": "application/json",
   };
-
   if (jwtToken) {
     headers.Authorization = `Bearer ${jwtToken}`;
   }
@@ -19,7 +18,6 @@ async function request(url, method, body = null, jwtToken = null) {
   }
 
   const response = await fetch(rootUrl + url, init);
-
   if (!response.ok) {
     throw new Error(response.status);
   }
@@ -35,11 +33,14 @@ export async function fetchChats(user) {
   return await request("chats", "GET", undefined, user.token);
 }
 
-export async function fetchMessages(user, selectedChatId) {
-  return await request(
-    `chats/${selectedChatId}/messages`,
-    "GET",
-    undefined,
-    user.token
-  );
+export async function fetchMessages(
+  user,
+  selectedChatId,
+  lastMessageId = null
+) {
+  const url = `chats/${selectedChatId}/messages${
+    lastMessageId ? `?lastMessageId=${lastMessageId}` : ""
+  }`;
+
+  return await request(url, "GET", undefined, user.token);
 }

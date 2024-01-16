@@ -12,6 +12,7 @@ export default function Home() {
   const [loginFailedMessage, setLoginFailedMessage] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
   const handleUsernameChange = (event) => {
     const value = event.target.value;
     setHideUsernameError(!!value);
@@ -46,7 +47,7 @@ export default function Home() {
     if (user && !isLoadingUser) {
       router.push("/chat");
     }
-  }, []);
+  }, [user]);
 
   return (
     <div className="container">

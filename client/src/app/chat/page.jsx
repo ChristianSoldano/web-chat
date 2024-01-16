@@ -6,12 +6,14 @@ import { useRouter } from "next/navigation";
 import { useUser } from "../context/UserProvider";
 import { fetchChats } from "../services/api";
 import Spinner from "../components/Spinner";
+import logoutButton from "@/../public/logout.svg";
+import Image from "next/image";
 
 export default function Chat() {
   const router = useRouter();
   const { user, logout, isLoadingUser } = useUser();
   const [chats, setChats] = useState([]);
-  const [selectedChatId, setSelectedChatId] = useState("");
+  const [selectedChat, setSelectedChat] = useState("");
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchData = async () => {
@@ -19,7 +21,7 @@ export default function Chat() {
       setIsLoading(true);
       const data = await fetchChats(user);
       setChats(data);
-      setSelectedChatId(data.entities[0].id);
+      setSelectedChat(data[0]);
       setIsLoading(false);
     }
   };
@@ -31,14 +33,43 @@ export default function Chat() {
     fetchData();
   }, [user]);
 
+  const handleLogout = () => {
+    logout();
+    router.push("/");
+  };
+
+  const selectChat = async (selectedId) => {
+    const chat = await chats.find((item) => item.id === selectedId);
+    setSelectedChat(chat);
+  };
+
   return (
     <div className="container">
       <section className="app">
         <div className="left-bar">
+          <div className="logged-user">
+            <div className="username-wrapper">
+              <span>{user?.username}</span>
+            </div>
+            <div className="button-wrapper">
+              <button onClick={handleLogout}>
+                <Image
+                  src={logoutButton}
+                  width={30}
+                  height={30}
+                  alt="logout button"
+                />
+              </button>
+            </div>
+          </div>
           <input type="text" placeholder="Search chat by username" />
-          {isLoading ? <Spinner /> : <ChatHistory chats={chats} />}
+          {isLoading ? (
+            <Spinner />
+          ) : (
+            <ChatHistory chats={chats} onClickAction={selectChat} />
+          )}
         </div>
-        <OpenChat selectedChatId={selectedChatId} />
+        <OpenChat selectedChat={selectedChat} />
       </section>
     </div>
   );

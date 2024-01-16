@@ -43,19 +43,20 @@ export const UserProvider = ({ children }) => {
 
   useEffect(() => {
     setIsLoadingUser(true);
-    if (user) {
-      const isExpired = moment(Date.now()).isAfter(user.expires);
+    const userCookie = getCookie("user");
+    if (userCookie) {
+      const userJson = JSON.parse(userCookie);
+      const isExpired = moment(Date.now()).isAfter(userJson.expires);
       if (isExpired) {
         deleteCookie("user");
-      }
-    } else {
-      const userCookie = getCookie("user");
-      if (userCookie) {
-        setUser(JSON.parse(userCookie));
+        setUser(null);
+      } else {
+        setUser(userJson);
       }
     }
+
     setIsLoadingUser(false);
-  }, [user]);
+  }, []);
 
   return (
     <UserContext.Provider value={{ user, login, logout, isLoadingUser }}>

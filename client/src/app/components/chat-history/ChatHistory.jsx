@@ -1,10 +1,12 @@
 import ChatHistoryItem from "./ChatHistoryItem";
 
-export default ({ chats }) => {
+export default ({ chats, onClickAction }) => {  
   return (
     <ul>
-      {chats?.entities?.map((item, i) => {
-        return <ChatHistoryItem chat={item} key={i} />;
+      {chats.map((item, i) => {
+        return (
+          <ChatHistoryItem chat={item} onClickAction={onClickAction} key={i} />
+        );
       })}
     </ul>
   );

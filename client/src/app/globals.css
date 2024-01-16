@@ -3,6 +3,7 @@
   --primary: #2b2d31;
   --secondary: #313338;
   --tertiary: #3a3c41;
+  --header: #242528;
   --chat-text: #fff;
   --chat-time: #ffffff32;
   --chat-received-background: #3e4046;
@@ -117,7 +118,6 @@ input:focus::placeholder {
   max-width: 25%;
   overflow: auto;
   overflow-x: hidden;
-  border-right: 2px solid var(--secondary);
   position: relative;
 }
 
@@ -175,6 +175,39 @@ input:focus::placeholder {
   text-overflow: ellipsis;
 }
 
+.logged-user {
+  height: 60px;
+  box-sizing: border-box;
+  display: flex;
+  background: var(--header);
+}
+
+.logged-user .username-wrapper {
+  width: 100%;
+  padding: 20px;
+  text-transform: uppercase;
+}
+
+.logged-user .button-wrapper {
+  display: flex;
+  padding-right: 20px;
+}
+
+.logged-user button {
+  border: none;
+  background: none;
+  margin: auto;
+  cursor: pointer;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+}
+
+.logged-user button:active {
+  transform: translateY(2px);
+  transition: transform 0.1s ease-out;
+}
+
 .open-chat {
   background: var(--secondary);
   flex: 2;
@@ -183,13 +216,13 @@ input:focus::placeholder {
 }
 
 .open-chat .contact-header {
-  background: var(--primary);
+  background: var(--header);
   height: 62px;
-
   padding: 20px;
   box-sizing: border-box;
   display: flex;
   align-items: center;
+  text-transform: uppercase;
 }
 
 .open-chat .chat {
