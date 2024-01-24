@@ -25,9 +25,9 @@ public class ChatController {
     private final SimpMessagingTemplate simpMessagingTemplate;
 
     @PostMapping
-    public ResponseEntity<ChatCreatedDTO> createChat(@RequestBody @Valid CreateChatDTO createChatDTO,
+    public ResponseEntity<ChatCreatedDTO> createChat(@RequestBody @Valid NewChatDTO newChatDTO,
                                                      @AuthenticationPrincipal User user) {
-        ChatCreatedDTO chatCreatedDTO = chatService.createChat(user, createChatDTO);
+        ChatCreatedDTO chatCreatedDTO = chatService.createChat(user, newChatDTO);
 
         return new ResponseEntity<>(chatCreatedDTO, CREATED);
     }
@@ -43,10 +43,10 @@ public class ChatController {
 
     @PostMapping("/{chatId}/messages")
     public ResponseEntity<MessageSentDTO> sendMessage(
-            @RequestBody @Valid SendMessageDTO sendMessageDTO,
+            @RequestBody @Valid NewMessageDTO newMessageDTO,
             @PathVariable UUID chatId,
             @AuthenticationPrincipal User user) {
-        MessageSentDTO messageSentDTO = chatService.sendMessage(sendMessageDTO, chatId, user);
+        MessageSentDTO messageSentDTO = chatService.sendMessage(newMessageDTO, chatId, user);
         simpMessagingTemplate.convertAndSend(format("/chat/%s", chatId), messageSentDTO);
 
         return new ResponseEntity<>(messageSentDTO, CREATED);

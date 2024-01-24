@@ -4,12 +4,13 @@ import ar.com.christiansoldano.chat.model.chat.MessageType;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
-public record CreateChatMessageDTO(
+public record NewMessageDTO(
 
         @NotNull
         MessageType type,
 
         @NotEmpty
         String content
+
 ) {
 }

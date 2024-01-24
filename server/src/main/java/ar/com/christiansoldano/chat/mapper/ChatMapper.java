@@ -5,7 +5,6 @@ import ar.com.christiansoldano.chat.dto.chat.ChatDTO;
 import ar.com.christiansoldano.chat.dto.chat.LastMessageDTO;
 import ar.com.christiansoldano.chat.dto.chat.MessageSentDTO;
 import ar.com.christiansoldano.chat.model.chat.Chat;
-import ar.com.christiansoldano.chat.model.chat.Message;
 import ar.com.christiansoldano.chat.model.user.User;
 import ar.com.christiansoldano.chat.service.chat.MessageService;
 import org.mapstruct.AfterMapping;
@@ -28,7 +27,7 @@ public abstract class ChatMapper {
     @Mapping(target = "chatId", source = "chat.id")
     @Mapping(target = "username1", source = "chat.user1.username")
     @Mapping(target = "username2", source = "chat.user2.username")
-    public abstract ChatCreatedDTO toChatCreatedDTO(Chat chat, Message message);
+    public abstract ChatCreatedDTO toChatCreatedDTO(Chat chat, MessageSentDTO message);
 
     @Mapping(target = "id", source = "chat.id")
     @Mapping(target = "createdAt", source = "chat.createdAt")
@@ -47,7 +46,7 @@ public abstract class ChatMapper {
 
     @AfterMapping
     protected void afterMappingChatDTO(@MappingTarget ChatDTO dto, Chat chat) {
-        MessageSentDTO lastMessage = messageService.getLastMessageByChat(chat.getId());
+        MessageSentDTO lastMessage = messageService.getLastMessageByChat(chat);
         if (lastMessage == null) {
             return;
         }

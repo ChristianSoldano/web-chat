@@ -4,6 +4,7 @@ import ar.com.christiansoldano.chat.dto.user.UserDTO;
 import ar.com.christiansoldano.chat.mapper.UserMapper;
 import ar.com.christiansoldano.chat.model.user.User;
 import ar.com.christiansoldano.chat.repository.user.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +27,7 @@ public class UserService {
         return userRepository.existsByUsernameOrEmail(username, email);
     }
 
+    @Transactional
     public void save(User user) {
         userRepository.save(user);
     }

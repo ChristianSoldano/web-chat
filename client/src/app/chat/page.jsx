@@ -1,7 +1,7 @@
 "use client";
 import ChatHistory from "@/app/components/chat-history/ChatHistory";
 import OpenChat from "@/app/components/open-chat/OpenChat";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useUser } from "../context/UserProvider";
 import { fetchChats } from "../services/api";
@@ -14,16 +14,18 @@ export default function Chat() {
   const { user, logout, isLoadingUser } = useUser();
   const [chats, setChats] = useState([]);
   const [selectedChat, setSelectedChat] = useState("");
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);  
 
   const fetchData = async () => {
-    if (user && !isLoadingUser) {
-      setIsLoading(true);
-      const data = await fetchChats(user);
-      setChats(data);
-      setSelectedChat(data[0]);
-      setIsLoading(false);
+    if (!user || isLoadingUser) {
+      return;
     }
+
+    setIsLoading(true);
+    const data = await fetchChats(user);
+    setChats(data);
+    setSelectedChat(data[0]);    
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -38,8 +40,8 @@ export default function Chat() {
     router.push("/");
   };
 
-  const selectChat = async (selectedId) => {
-    const chat = await chats.find((item) => item.id === selectedId);
+  const handleSelectChat = async (selectedId) => {
+    const chat = await chats.find((item) => item.id === selectedId);    
     setSelectedChat(chat);
   };
 
@@ -66,7 +68,7 @@ export default function Chat() {
           {isLoading ? (
             <Spinner />
           ) : (
-            <ChatHistory chats={chats} onClickAction={selectChat} />
+            <ChatHistory chats={chats} onClickAction={handleSelectChat} />
           )}
         </div>
         <OpenChat selectedChat={selectedChat} />

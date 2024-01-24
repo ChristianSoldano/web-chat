@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@stomp/stompjs": "^7.0.0",
     "cookies-next": "^4.1.0",
     "jsonwebtoken": "^9.0.2",
     "moment": "^2.30.1",

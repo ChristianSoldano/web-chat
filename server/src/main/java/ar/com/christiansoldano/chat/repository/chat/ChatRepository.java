@@ -14,8 +14,8 @@ public interface ChatRepository extends JpaRepository<Chat, UUID> {
 
     boolean existsByUser1AndUser2(User user1, User user2);
 
-    @Query(value = "SELECT COUNT(*) > 0 FROM Chat c WHERE c.id = :chatId AND (c.user1 = :user OR c.user2 = :user)")
-    boolean userBelongsToChat(UUID chatId, User user);
+    @Query(value = "SELECT COUNT(*) > 0 FROM Chat c WHERE c = :chat AND (c.user1 = :user OR c.user2 = :user)")
+    boolean userBelongsToChat(Chat chat, User user);
 
     @Query(value = "SELECT c " +
             "FROM Chat c " +
