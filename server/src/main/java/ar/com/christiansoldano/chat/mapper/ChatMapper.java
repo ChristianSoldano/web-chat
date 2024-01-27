@@ -2,7 +2,6 @@ package ar.com.christiansoldano.chat.mapper;
 
 import ar.com.christiansoldano.chat.dto.chat.ChatCreatedDTO;
 import ar.com.christiansoldano.chat.dto.chat.ChatDTO;
-import ar.com.christiansoldano.chat.dto.chat.LastMessageDTO;
 import ar.com.christiansoldano.chat.dto.chat.MessageSentDTO;
 import ar.com.christiansoldano.chat.model.chat.Chat;
 import ar.com.christiansoldano.chat.model.user.User;
@@ -51,7 +50,6 @@ public abstract class ChatMapper {
             return;
         }
 
-        LastMessageDTO lastMessageDTO = new LastMessageDTO(lastMessage.type(), lastMessage.content(), lastMessage.sender());
-        dto.setLastMessage(lastMessageDTO);
+        dto.setLastMessage(lastMessage);
     }
 }

@@ -1,39 +1,19 @@
 "use client";
 import ChatHistory from "@/app/components/chat-history/ChatHistory";
 import OpenChat from "@/app/components/open-chat/OpenChat";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useUser } from "../context/UserProvider";
-import { fetchChats } from "../services/api";
 import Spinner from "../components/Spinner";
 import logoutButton from "@/../public/logout.svg";
 import Image from "next/image";
+import { useChat } from "../context/ChatProvider";
 
 export default function Chat() {
   const router = useRouter();
-  const { user, logout, isLoadingUser } = useUser();
-  const [chats, setChats] = useState([]);
+  const { user, logout } = useUser();
   const [selectedChat, setSelectedChat] = useState("");
-  const [isLoading, setIsLoading] = useState(true);  
-
-  const fetchData = async () => {
-    if (!user || isLoadingUser) {
-      return;
-    }
-
-    setIsLoading(true);
-    const data = await fetchChats(user);
-    setChats(data);
-    setSelectedChat(data[0]);    
-    setIsLoading(false);
-  };
-
-  useEffect(() => {
-    if (!user && !isLoadingUser) {
-      router.push("/");
-    }
-    fetchData();
-  }, [user]);
+  const { chats, isLoadingChats } = useChat();
 
   const handleLogout = () => {
     logout();
@@ -41,7 +21,7 @@ export default function Chat() {
   };
 
   const handleSelectChat = async (selectedId) => {
-    const chat = await chats.find((item) => item.id === selectedId);    
+    const chat = await chats.find((item) => item.id === selectedId);
     setSelectedChat(chat);
   };
 
@@ -65,7 +45,7 @@ export default function Chat() {
             </div>
           </div>
           <input type="text" placeholder="Search chat by username" />
-          {isLoading ? (
+          {isLoadingChats ? (
             <Spinner />
           ) : (
             <ChatHistory chats={chats} onClickAction={handleSelectChat} />

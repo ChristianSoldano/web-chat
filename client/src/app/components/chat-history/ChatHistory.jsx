@@ -1,6 +1,6 @@
 import ChatHistoryItem from "./ChatHistoryItem";
 
-export default ({ chats, onClickAction }) => {  
+export default ({ chats, onClickAction }) => {
   return (
     <ul>
       {chats.map((item, i) => {

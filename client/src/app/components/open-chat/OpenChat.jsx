@@ -6,7 +6,7 @@ import sendMessageIcon from "@/../public/send-button.svg";
 import Spinner from "../Spinner";
 import { useUser } from "@/app/context/UserProvider";
 import { fetchMessages, sendMessage } from "@/app/services/api";
-import { Client } from "@stomp/stompjs";
+import { useChat } from "@/app/context/ChatProvider";
 
 export default ({ selectedChat }) => {
   const { user, isLoadingUser } = useUser();
@@ -16,48 +16,32 @@ export default ({ selectedChat }) => {
   const [lastMessageId, setLastMessageId] = useState(null);
   const [canFetch, setCanFetch] = useState(true);
   const [messageText, setMessageText] = useState("");
-  const clientRef = useRef(null);
+  const { chats } = useChat();
 
   useEffect(() => {
     fetchData();
-    connectSocket();
   }, [selectedChat]);
+
+  useEffect(() => {
+    if (!user || isLoadingUser || !selectedChat) {
+      return;
+    }
+
+    const openChat = chats.find((item) => item.id === selectedChat.id);
+    setMessages((prevMessages) => {
+      if (prevMessages[0].id === openChat?.last_message.id) {
+        return prevMessages;
+      }
+      
+      return [openChat?.last_message, ...prevMessages];
+    });
+  }, [chats]);
 
   useEffect(() => {
     if (messages.length <= 20) {
       scrollToIndex(0);
     }
   }, [messages]);
-
-  const disconnectSocket = () => {
-    if (clientRef.current) {
-      clientRef.current.deactivate();
-      clientRef.current = null;
-    }
-  };
-
-  const connectSocket = async () => {
-    disconnectSocket();
-    if (!user || isLoadingUser || !selectedChat) {
-      return;
-    }
-
-    const newClient = new Client({
-      brokerURL: process.env.NEXT_PUBLIC_API_WEBSOCKET_URL,
-      connectHeaders: {
-        Authorization: `Bearer ${user.token}`,
-      },
-      onConnect: () => {
-        newClient.subscribe(`/chat/${selectedChat.id}`, (message) => {
-          const parsedMessage = JSON.parse(message.body);
-          setMessages((prevMessages) => [parsedMessage, ...prevMessages]);
-        });
-      },
-    });
-
-    newClient.activate();
-    clientRef.current = newClient;
-  };
 
   const fetchData = async () => {
     if (!user || isLoadingUser || !selectedChat) {
@@ -136,35 +120,41 @@ export default ({ selectedChat }) => {
   return (
     <div className="open-chat">
       <div className="contact-header">{selectedChat?.chat_with}</div>
-      <div className="chat" onScroll={handleScroll}>
-        {isLoading ? (
-          <Spinner />
-        ) : messages.length > 0 ? (
-          <ul ref={messagesRef}>
-            {messages.map((message, i) => {
-              return <OpenChatItem message={message} user={user} key={i} />;
-            })}
-          </ul>
-        ) : null}
-      </div>
-      <div className="send">
-        <input
-          type="text"
-          placeholder="Type a message"
-          value={messageText}
-          onChange={(e) => setMessageText(e.target.value)}
-          onKeyDown={(e) => handleKeyPress(e)}
-        />
-        <button onClick={handleSendMessage}>
-          <Image
-            src={sendMessageIcon}
-            width={40}
-            height={40}
-            alt="send button"
-            className="send-button"
-          />
-        </button>
-      </div>
+      {!selectedChat ? (
+        <h1>SELECCIONA UN CHAT PERRO</h1>
+      ) : (
+        <>
+          <div className="chat" onScroll={handleScroll}>
+            {isLoading ? (
+              <Spinner />
+            ) : messages.length > 0 ? (
+              <ul ref={messagesRef}>
+                {messages.map((message, i) => {
+                  return <OpenChatItem message={message} user={user} key={i} />;
+                })}
+              </ul>
+            ) : null}
+          </div>
+          <div className="send">
+            <input
+              type="text"
+              placeholder="Type a message"
+              value={messageText}
+              onChange={(e) => setMessageText(e.target.value)}
+              onKeyDown={(e) => handleKeyPress(e)}
+            />
+            <button onClick={handleSendMessage}>
+              <Image
+                src={sendMessageIcon}
+                width={40}
+                height={40}
+                alt="send button"
+                className="send-button"
+              />
+            </button>
+          </div>{" "}
+        </>
+      )}
     </div>
   );
 };
