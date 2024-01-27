@@ -1,7 +1,5 @@
-//TODO use .env
-const rootUrl = "http://localhost:8080/api/";
-
 async function request(url, method, body = null, jwtToken = null) {
+  const rootUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   const headers = {
     "Content-Type": "application/json",
   };
@@ -26,11 +24,11 @@ async function request(url, method, body = null, jwtToken = null) {
 }
 
 export async function loginRequest(credentials) {
-  return await request("auth/login", "POST", credentials);
+  return await request("/auth/login", "POST", credentials);
 }
 
 export async function fetchChats(user) {
-  return await request("chats", "GET", undefined, user.token);
+  return await request("/chats", "GET", undefined, user.token);
 }
 
 export async function fetchMessages(
@@ -38,9 +36,15 @@ export async function fetchMessages(
   selectedChatId,
   lastMessageId = null
 ) {
-  const url = `chats/${selectedChatId}/messages${
+  const url = `/chats/${selectedChatId}/messages${
     lastMessageId ? `?lastMessageId=${lastMessageId}` : ""
   }`;
 
   return await request(url, "GET", undefined, user.token);
+}
+
+export async function sendMessage(user, selectedChatId, message) {
+  const url = `/chats/${selectedChatId}/messages`;
+
+  return await request(url, "POST", message, user.token);
 }

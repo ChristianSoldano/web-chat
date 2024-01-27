@@ -17,7 +17,7 @@ public class ChatDTO {
     private String chatWith;
 
     @JsonProperty("last_message")
-    private LastMessageDTO lastMessage;
+    private MessageSentDTO lastMessage;
 
     @JsonProperty("created_at")
     private Timestamp createdAt;

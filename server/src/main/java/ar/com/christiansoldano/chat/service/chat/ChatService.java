@@ -6,7 +6,6 @@ import ar.com.christiansoldano.chat.exception.chat.ChatNotBelongingException;
 import ar.com.christiansoldano.chat.exception.chat.ChatNotFoundException;
 import ar.com.christiansoldano.chat.mapper.ChatMapper;
 import ar.com.christiansoldano.chat.model.chat.Chat;
-import ar.com.christiansoldano.chat.model.chat.Message;
 import ar.com.christiansoldano.chat.model.user.User;
 import ar.com.christiansoldano.chat.repository.chat.ChatRepository;
 import ar.com.christiansoldano.chat.service.user.UserService;
@@ -30,21 +29,22 @@ public class ChatService {
     private final ChatMapper chatMapper;
 
     @Transactional
-    public ChatCreatedDTO createChat(User user, CreateChatDTO createChatDTO) {
-        User to = userService.findUserByUsername(createChatDTO.to())
-                .orElseThrow(() -> new UsernameNotFoundException(format("Username '%s' was not found", createChatDTO.to())));
+    public ChatCreatedDTO createChat(User user, NewChatDTO newChatDTO) {
+        User to = userService.findUserByUsername(newChatDTO.to())
+                .orElseThrow(() -> new UsernameNotFoundException(format("Username '%s' was not found", newChatDTO.to())));
         boolean chatExists = chatRepository.existsByUser1AndUser2(user, to);
         if (chatExists) {
             throw new ChatAlreadyExistsException();
         }
 
         Chat chat = chatRepository.save(new Chat(user, to));
-        Message message = messageService.saveMessage(createChatDTO.message(), user, chat);
+        MessageSentDTO message = messageService.saveMessage(newChatDTO.message(), user, chat);
 
         return chatMapper.toChatCreatedDTO(chat, message);
     }
 
-    public MessageSentDTO sendMessage(SendMessageDTO sendMessageDTO, UUID chatId, User user) {
+    @Transactional
+    public MessageSentDTO sendMessage(NewMessageDTO newMessageDTO, UUID chatId, User user) {
         Chat chat = chatRepository.findById(chatId)
                 .orElseThrow(() -> new ChatNotFoundException(format("Chat id '%s' was not found", chatId)));
         boolean userBelongsToChat = chat.getUser1().getId().equals(user.getId()) || chat.getUser2().getId().equals(user.getId());
@@ -52,16 +52,18 @@ public class ChatService {
             throw new ChatNotBelongingException();
         }
 
-        return messageService.saveMessage(sendMessageDTO, user, chat);
+        return messageService.saveMessage(newMessageDTO, user, chat);
     }
 
     public List<MessageSentDTO> getPreviousTenMessages(UUID chatId, UUID lastMessageId, User user) {
-        boolean userBelongsToChat = chatRepository.userBelongsToChat(chatId, user);
+        Chat chat = chatRepository.findById(chatId)
+                .orElseThrow(() -> new ChatNotFoundException(format("Chat id '%s' was not found", chatId)));
+        boolean userBelongsToChat = chatRepository.userBelongsToChat(chat, user);
         if (!userBelongsToChat) {
             throw new ChatNotBelongingException();
         }
 
-        return messageService.getPreviousTenMessages(chatId, lastMessageId);
+        return messageService.getPreviousTenMessages(chat, lastMessageId);
     }
 
     public List<ChatDTO> getChats(User user) {

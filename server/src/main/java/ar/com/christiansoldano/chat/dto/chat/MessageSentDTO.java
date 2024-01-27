@@ -10,6 +10,9 @@ public record MessageSentDTO(
 
         UUID id,
 
+        @JsonProperty("chat_id")
+        UUID chatId,
+
         MessageType type,
 
         String content,

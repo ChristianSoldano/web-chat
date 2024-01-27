@@ -185,7 +185,6 @@ input:focus::placeholder {
 .logged-user .username-wrapper {
   width: 100%;
   padding: 20px;
-  text-transform: uppercase;
 }
 
 .logged-user .button-wrapper {
@@ -222,7 +221,6 @@ input:focus::placeholder {
   box-sizing: border-box;
   display: flex;
   align-items: center;
-  text-transform: uppercase;
 }
 
 .open-chat .chat {

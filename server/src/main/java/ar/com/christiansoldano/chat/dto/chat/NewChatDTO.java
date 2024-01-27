@@ -4,13 +4,13 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
-public record CreateChatDTO(
+public record NewChatDTO(
 
         @NotEmpty
         String to,
 
         @NotNull
         @Valid
-        CreateChatMessageDTO message
+        NewMessageDTO message
 ) {
 }
